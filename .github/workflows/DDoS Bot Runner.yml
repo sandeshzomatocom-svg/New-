@@ -1,4 +1,4 @@
-name: DDoS Bot Runner
+name: DDoS Bot Runner 
 
 on:
   push:
