@@ -18,6 +18,6 @@ jobs:
           sudo apt-get install -y scapy
       - name: Run bot
         env:
-          TELEGRAM_BOT_API_KEY: 8625781811:AAGymdn1JBdoOj2aba1kpmz9vebH9k3Q0Ko
+          TELEGRAM_BOT_API_KEY: ${{ secrets.TELEGRAM_BOT_API_KEY }}
         run: |
           sudo python ddos_bot.py
