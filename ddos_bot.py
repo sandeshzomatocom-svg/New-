@@ -3,6 +3,7 @@ from scapy.all import *
 from threading import Thread
 import time
 import os
+import subprocess
 
 class DDoSAttack:
     def __init__(self, ip, port):
