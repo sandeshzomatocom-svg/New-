@@ -1,0 +1,19 @@
+name: DDoS Bot Runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install python-telegram-bot scapy
+      - name: Run bot
+        run: |
+          python ddos_bot.py
