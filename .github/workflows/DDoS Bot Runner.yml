@@ -1,4 +1,4 @@
-name: DDoS Bot Runner 
+name: DDoS Bot Runner
 
 on:
   push:
@@ -14,8 +14,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install python-telegram-bot scapy
+          sudo apt-get update
+          sudo apt-get install -y scapy
       - name: Run bot
         env:
           TELEGRAM_BOT_API_KEY: ${{ secrets.TELEGRAM_BOT_API_KEY }}
         run: |
-          python ddos_bot.py
+          sudo python ddos_bot.py
